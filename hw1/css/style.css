@@ -1,0 +1,72 @@
+/* This is an empty style sheet in CSS */
+
+body {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    background-color: #cbc6bd;
+    color: #302c2c;
+    margin: 20px;
+}
+
+header h1 {
+    color: #1d4359;
+    font-size: 28px;
+}
+
+.journal-date {
+    color: #5f5858;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.inspirational-quote {
+    color: #af4d07;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.save-button {
+    background-color: #146c9e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+}
+
+.clear-button {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+}
+
+main img {
+    max-width: 500px;
+    border: 5px solid #000000;
+}
+
+.journal-notes {
+    width: 100%;
+    max-width: 500px;
+    border: 2px solid #1d4359;
+    font-family: Georgia, serif;
+    font-size: 14px;
+}
+
+.mood-checkboxes {
+    border: 2px solid #1d4359;
+    margin-top: 15px;
+    max-width: 500px;
+    background-color: #e8e4dc;
+}
+
+
+main {
+    max-width: 500px;
+}
+
+footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #5f5858;
+    font-size: 14px;
+}

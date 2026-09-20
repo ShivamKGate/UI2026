@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My UI</title>
+    
+    <!-- The following line references an external css file -->
+    <!-- It defines style rules for your page, and elements in your page -->
+    <link href="css/style.css" rel="stylesheet">
+    
+</head>
+<body>
+    <header> <h1> Shivam's UI </h1></header>
+    <main>
+        <section class="journal-summary">
+            <h2>Past Few Days Summary</h2>
+            <p id="avg-sleep">Average sleep: -- hours</p>
+            <p id="mood-counts">Mood counts: --</p>
+        </section>
+        <h2>Journal Entry</h2>
+        <p class="journal-date">Monday, August 31, 2026, 4:22 PM</p>
+        <img src="images/imageoftheday.jpg" alt="Image of the day">
+        <p class="inspirational-quote">
+            Be better than you were yesterday!
+        </p>
+        <label for="journal-notes">Today's notes:</label>
+        <textarea id="journal-notes" class="journal-notes" rows="5" cols="40" placeholder="Today's notes here."></textarea>
+        <br>
+        <label for="sleep-hours">Hours of sleep from last night:</label>
+        <input type="number" id="sleep-hours" class="sleep-hours" min="0" max="24" step="0.5">
+        <br>
+        <fieldset class="mood-checkboxes">
+            <legend>How did you feel today?</legend>
+            <br>
+            <label><input type="checkbox" name="mood" value="energetic"> Energetic</label>
+            <label><input type="checkbox" name="mood" value="anxious"> Anxious</label>
+            <label><input type="checkbox" name="mood" value="motivated"> Motivated</label>
+            <label><input type="checkbox" name="mood" value="tired"> Tired</label>
+            <label><input type="checkbox" name="mood" value="calm"> Calm</label>
+        </fieldset>
+        <br>
+        <button type="button" id="save-button" class="save-button">Save today's journal entry</button>
+<button type="button" id="clear-button" class="clear-button">Clear today's journal entry</button>
+     </main>
+    <footer> <p> Copyright 2026 Shivam's UI </p> </footer>
+    <!-- Load external JS files -->
+    <!-- This is where you will do most of the 'work' for your applications -->
+    <script src="js/main.js"></script>
+</body>
+</html>
