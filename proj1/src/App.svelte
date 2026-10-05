@@ -1,4 +1,6 @@
 <script>
+  import { onDestroy } from 'svelte';
+
   let temp = $state(18);
   let position = $state('flat');
   let sleepmode = $state(false);
@@ -13,6 +15,72 @@
   let timesGotUp = $state(0);
   let avgTemp = $state(18);
   let percentFlat = $state(0);
+
+  // an example of a overnight simulation
+  let nightRunning = $state(false);
+  let nightClock = $state('--:--');
+  let nightStepIndex = 0;
+  let nightTimer = null;
+
+  // simple preset schedule for one night, having a mix of timeline and auto steps added
+  const nightSteps = [
+    {
+      clock: '11:00 PM',
+      occupied: true,
+      sleepmode: true,
+      position: 'flat',
+      temp: 20,
+      action: 'Night: person lies down'
+    },
+    {
+      clock: '12:30 AM',
+      occupied: true,
+      sleepmode: true,
+      position: 'flat',
+      temp: 18,
+      action: 'Night: room cools'
+    },
+    {
+      clock: '2:00 AM',
+      occupied: true,
+      sleepmode: true,
+      position: 'flat',
+      temp: 16,
+      action: 'Night: cooler still'
+    },
+    {
+      clock: '3:30 AM',
+      occupied: true,
+      sleepmode: true,
+      position: 'raised',
+      temp: 16,
+      action: 'Night: brief sit-up'
+    },
+    {
+      clock: '3:45 AM',
+      occupied: true,
+      sleepmode: true,
+      position: 'flat',
+      temp: 16,
+      action: 'Night: back to sleep'
+    },
+    {
+      clock: '6:30 AM',
+      occupied: true,
+      sleepmode: true,
+      position: 'flat',
+      temp: 17,
+      action: 'Night: morning warm-up'
+    },
+    {
+      clock: '7:00 AM',
+      occupied: false,
+      sleepmode: false,
+      position: 'raised',
+      temp: 18,
+      action: 'Night: person gets up'
+    }
+  ];
 
   // four profiles
   const profiles = [
@@ -123,6 +191,49 @@
 
     lastAction = `Loaded profile: ${profile.name}`;
   }
+
+  function applyNightStep(step) {
+    nightClock = step.clock;
+    occupied = step.occupied;
+    sleepmode = step.sleepmode;
+    position = step.position;
+    temp = step.temp;
+    lastAction = step.action;
+  }
+
+  function stopNight() {
+    nightRunning = false;
+    if (nightTimer) {
+      clearInterval(nightTimer);
+      nightTimer = null;
+    }
+  }
+
+  // running or stopping the overnight simulation from the testing UI
+  function toggleNight() {
+    if (nightRunning) {
+      stopNight();
+      lastAction = 'Night simulation stopped';
+      return;
+    }
+
+    nightRunning = true;
+    nightStepIndex = 0;
+    sessionsToday += 1;
+    applyNightStep(nightSteps[0]);
+
+    nightTimer = setInterval(() => {
+      nightStepIndex += 1;
+      if (nightStepIndex >= nightSteps.length) {
+        stopNight();
+        lastAction = 'Night simulation finished';
+        return;
+      }
+      applyNightStep(nightSteps[nightStepIndex]);
+    }, 1000);
+  }
+
+  onDestroy(stopNight);
 </script>
 
 <div class="layout">
@@ -168,7 +279,8 @@
         occupied, turns sleep mode on, and flattens. <strong>Person getting up</strong> clears
         occupancy, turns sleep mode off, and raises. <strong>Room cooling overnight</strong>
         lowers temperature by 2 degrees. Use a <strong>profile</strong> button to load that person's
-        example usage data into the Device UI.
+        example usage data into the Device UI. <strong>Run night</strong> plays a short preset
+        schedule from evening to morning; press again to stop.
       </p>
     {/if}
 
@@ -177,6 +289,14 @@
       <button type="button" onclick={personGetsUp}>Person getting up</button>
       <button type="button" onclick={roomCools}>Room cooling overnight</button>
     </p>
+
+    <h3>Overnight simulation</h3>
+    <p>
+      <button type="button" onclick={toggleNight}>
+        {nightRunning ? 'Stop night' : 'Run night'}
+      </button>
+    </p>
+    <p>Night clock: <strong>{nightClock}</strong></p>
 
     <h3>Load example user profile</h3>
     <p>
@@ -195,6 +315,7 @@
     <!-- indicators for the headboard display -->
     <div class="display">
       <h3>Headboard display</h3>
+      <p>Night clock: <strong>{nightClock}</strong></p>
       <p>Occupancy: <strong>{occupied ? 'occupied' : 'empty'}</strong></p>
       <p>Temperature: <strong>{temp}°C</strong></p>
       <p>Position: <strong>{position}</strong></p>
