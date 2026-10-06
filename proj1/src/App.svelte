@@ -243,7 +243,7 @@
     <p>Shivam Sinay Kharangate</p>
     <p>
       <a
-        href="https://example.com/your-project-writeup" // gotta add the documentation link here later
+        href="https://github.com/ShivamKGate/UI2026/blob/main/proj1/DOCUMENTATION.md"
         target="_blank"
         rel="noopener noreferrer"
       >
